@@ -11,3 +11,4 @@ model:
 resolver:
   filename: resolver.go
   type: Resolver
+omit_slice_element_pointers: true

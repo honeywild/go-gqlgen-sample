@@ -23,8 +23,8 @@ func (r *mutationResolver) NewArticle(ctx context.Context, input NewArticle) (*A
 		return nil, errors.New("invalid userID")
 	}
 	article := &Article{
-		ID: len(articles),
-		Text: input.Text,
+		ID:     len(articles),
+		Text:   input.Text,
 		UserID: input.UserID,
 	}
 	articles = append(articles, article)
@@ -32,7 +32,7 @@ func (r *mutationResolver) NewArticle(ctx context.Context, input NewArticle) (*A
 	response := &ArticleResponse{
 		ID:   article.ID,
 		Text: article.Text,
-		User: *users[article.UserID],
+		User: users[article.UserID],
 	}
 	return response, nil
 }
@@ -46,14 +46,14 @@ func (r *mutationResolver) SetArticleText(ctx context.Context, input EditArticle
 	response := &ArticleResponse{
 		ID:   article.ID,
 		Text: article.Text,
-		User: *users[article.UserID],
+		User: users[article.UserID],
 	}
 	return response, nil
 }
 
 func (r *mutationResolver) NewUser(ctx context.Context, input NewUser) (*User, error) {
 	user := &User{
-		ID: len(users),
+		ID:   len(users),
 		Name: input.Name,
 	}
 	users = append(users, user)
@@ -68,7 +68,7 @@ func (r *queryResolver) Articles(ctx context.Context) ([]ArticleResponse, error)
 		r := ArticleResponse{
 			ID:   article.ID,
 			Text: article.Text,
-			User: *users[article.UserID],
+			User: users[article.UserID],
 		}
 		response = append(response, r)
 	}
@@ -83,7 +83,7 @@ func (r *queryResolver) Article(ctx context.Context, id *int) (*ArticleResponse,
 	response := &ArticleResponse{
 		ID:   article.ID,
 		Text: article.Text,
-		User: *users[article.UserID],
+		User: users[article.UserID],
 	}
 	return response, nil
 }
@@ -99,7 +99,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]User, error) {
 }
 
 func (r *queryResolver) User(ctx context.Context, id *int) (*User, error) {
-	if *id < 0 || *id>= len(users) {
+	if *id < 0 || *id >= len(users) {
 		return nil, errors.New("index out of bounds")
 	}
 	return users[*id], nil
